@@ -3,6 +3,7 @@ package com.cstorage.service;
 import com.cstorage.repository.DirRepository;
 import com.cstorage.utils.DirUtil;
 import com.cstorage.utils.FileUtil;
+import com.cstorage.utils.Pair;
 import io.minio.*;
 import io.minio.errors.*;
 import io.minio.messages.Item;
@@ -199,8 +200,7 @@ public class DirService implements DirRepository {
         }
         return false;
     }
-    @Override
-    public List<String> allEntries(String text) {
+    public List<String> allDirEntries(String entry) {
         var all = new ArrayList<String>();
         for (Result<Item> it : clientService.getMinioClient().listObjects(
                 ListObjectsArgs
@@ -210,15 +210,39 @@ public class DirService implements DirRepository {
                         .build())) {
 
             try {
-                if (it.get().objectName().contains(text))
-                    all.add(it.get().objectName());
+                var filePath = it.get().objectName();
+                if (filePath.contains(entry) && DirUtil.getPath(filePath).contains(entry)) {
+                    all.add(DirUtil.getPath(filePath));
+                }
             } catch (ErrorResponseException | XmlParserException | ServerException | NoSuchAlgorithmException |
                      IOException | InvalidResponseException | InvalidKeyException | InternalException |
                      InsufficientDataException e) {
                 throw new RuntimeException(e);
             }
         }
-        if (all.isEmpty()) return List.of();
+        return all;
+    }
+
+    public List<Pair> allFileEntries(String entry) {
+        var all = new ArrayList<Pair>();
+        for (Result<Item> it : clientService.getMinioClient().listObjects(
+                ListObjectsArgs
+                        .builder()
+                        .bucket(clientService.getRootBucket())
+                        .recursive(true)
+                        .build())) {
+
+            try {
+                var filePath = it.get().objectName();
+                if (filePath.contains(entry) && FileUtil.getObjectName(filePath).contains(entry)) {
+                    all.add(new Pair(filePath, DirUtil.getPath(filePath)));
+                }
+            } catch (ErrorResponseException | XmlParserException | ServerException | NoSuchAlgorithmException |
+                     IOException | InvalidResponseException | InvalidKeyException | InternalException |
+                     InsufficientDataException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return all;
     }
 }

@@ -2,7 +2,6 @@ package com.cstorage.controller;
 
 import com.cstorage.dto.file.FileDTO;
 import com.cstorage.dto.folder.FolderDTO;
-import com.cstorage.dto.query.QueryDTO;
 import com.cstorage.service.ClientService;
 import com.cstorage.service.DirService;
 import com.cstorage.utils.DirUtil;
@@ -36,7 +35,6 @@ public class FolderController {
                             Model model) {
         model.addAttribute("folderDto", new FolderDTO());
         model.addAttribute("fileDto", new FileDTO());
-        model.addAttribute("query", new QueryDTO());
         model.addAttribute("username", SecurityContextHolder.getContext().getAuthentication().getName());
         if (path != null && DirUtil.validate(path)) {
             model.addAttribute("tree", DirUtil.getMapOfChildren(path));

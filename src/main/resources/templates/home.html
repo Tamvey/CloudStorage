@@ -32,34 +32,13 @@
                 <!--                    Searcher-->
                 <!--                    -->
                 <div class="container w-50 my-5">
-                    <form class="d-flex w-100" th:action="@{/home/folder/search}" th:method="post"
-                          th:object="${query}">
+                    <form class="d-flex w-100" th:action="@{/home/search}" th:method="get">
                         <input class="form-control me-2" type="text" placeholder="Поиск"
-                               aria-label="Поиск" th:field="*{text}">
-                        <button class="btn btn-outline-success" type="submit"
-                                data-toggle="modal" data-target="#myModal">Поиск</button>
+                               aria-label="Поиск" th:name="entry" th:value="*{text}">
+                        <button class="btn btn-outline-success" type="submit">Поиск</button>
                     </form>
                 </div>
 
-                <div class="modal fade" id="myModal" role="dialog">
-                    <div class="modal-dialog">
-
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal"></button>
-                                <h4 class="modal-title">Modal Header</h4>
-                            </div>
-                            <div class="modal-body">
-                                <p>Some text in the modal.</p>
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                            </div>
-                        </div>
-
-                    </div>
-                </div>
                 <!--                    Work with folders-->
                 <!--                    -->
 
@@ -169,7 +148,7 @@
                                 <form th:action="|@{/home/file}?path=${root}|" th:object="${fileDto}" enctype="multipart/form-data" method="post" >
                                     <div class="input-group mb-3">
                                         <input type="file" class="form-control" id="inputGroupFile02" th:field="*{files}" webkitdirectory>
-                                        <button class="btn btn-outline-secondary" id="inputGroupFileAddon02">Upload</button>
+                                        <button class="btn btn-outline-secondary" id="inputGroupFileAddon02">Upload folder</button>
                                     </div>
                                 </form>
                             </div>
@@ -180,7 +159,7 @@
                                     <form th:action="|@{/home/file}?path=${root}|" th:object="${fileDto}" enctype="multipart/form-data" method="post" >
                                         <div class="input-group mb-3">
                                             <input type="file" class="form-control" id="inputGroupFile01" th:field="*{files}" multiple>
-                                            <button class="btn btn-outline-secondary" id="inputGroupFileAddon01">Upload</button>
+                                            <button class="btn btn-outline-secondary" id="inputGroupFileAddon01">Upload file</button>
                                         </div>
                                     </form>
                                 </div>

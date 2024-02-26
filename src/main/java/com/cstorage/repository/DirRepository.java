@@ -13,5 +13,4 @@ public interface DirRepository {
     void addFolder(String path);
     void deleteFolder(String path);
     void renameFolder(String before, String after);
-    List<String> allEntries(String text);
 }
